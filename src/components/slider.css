@@ -1,0 +1,53 @@
+.slider {
+    --slider-height: 10px;
+    --slider-width: 476px;
+    --slider-border-radius: 2px;
+    --slider-bg: #010215;
+    --thumb-height: 20px;
+    --thumb-width: 20px;
+    --thumb-border-radius: 50%;
+    --thumb-hover: #270707;
+    --track-bg: #0dc338;
+    --border-width: 2px;
+    --border-color: #f6eeee;
+    background: var(--slider-bg);
+    width: var(--slider-width);
+    height: var(--slider-height);
+    border-radius: var(--slider-border-radius);
+    position: relative;
+}
+
+.slider.inactive {
+    --thumb-bg: #f6eeee;
+}
+
+.slider.active {
+    --thumb-bg: #270707;
+}
+
+.slider .thumb {
+    background: var(--thumb-bg);
+    position: absolute;
+    top: calc(-1 * var(--thumb-height) / 2 + var(--slider-height) / 2);
+    left: calc(50% - var(--thumb-width) / 2);
+    width: var(--thumb-width);
+    height: var(--thumb-height);
+    border-radius: var(--thumb-border-radius);
+    border: var(--border-width) solid var(--border-color);
+    transition: background-color .33s;
+}
+
+@media screen and (hover: hover) {
+    .slider .thumb:hover {
+        background: var(--thumb-hover);
+    }
+}
+
+.slider .track {
+    background: var(--track-bg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+}
