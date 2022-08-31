@@ -8,14 +8,14 @@ export default function Slider({ from, to, update_value }) {
     function move_thumb(pageX) {
         const slider = document.querySelector(".slider");
         const thumb = slider.querySelector(".thumb");
-        const parentalBox = slider.getBoundingClientRect();
+        const sliderBox = slider.getBoundingClientRect();
 
-        if (pageX < parentalBox.left) {
+        if (pageX < sliderBox.left) {
             thumb.style.left = `${thumb.offsetWidth / 2}`;
-        } else if (parentalBox.right < pageX)
+        } else if (sliderBox.right < pageX)
             thumb.style.rigth = 0;
         else {
-            thumb.style.left = `${pageX - parentalBox.left - thumb.offsetWidth / 2}px`
+            thumb.style.left = `${pageX - sliderBox.left - thumb.offsetWidth / 2}px`
         }
     }
 

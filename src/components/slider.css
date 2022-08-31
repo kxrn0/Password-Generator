@@ -1,15 +1,14 @@
 .slider {
-    --slider-height: 10px;
+    --slider-height: 8px;
     --slider-width: 476px;
-    --slider-border-radius: 2px;
-    --slider-bg: #010215;
-    --thumb-height: 20px;
-    --thumb-width: 20px;
+    --slider-bg: #18171F;
+    --thumb-height: 28px;
+    --thumb-width: 28px;
     --thumb-border-radius: 50%;
-    --thumb-hover: #270707;
-    --track-bg: #0dc338;
+    --thumb-hover: #18171F;
+    --track-bg: #A4FFAF;
     --border-width: 2px;
-    --border-color: #f6eeee;
+    --border-color: #A4FFAF;
     background: var(--slider-bg);
     width: var(--slider-width);
     height: var(--slider-height);
@@ -32,8 +31,8 @@
     left: calc(50% - var(--thumb-width) / 2);
     width: var(--thumb-width);
     height: var(--thumb-height);
-    border-radius: var(--thumb-border-radius);
     border: var(--border-width) solid var(--border-color);
+    border-radius: var(--thumb-border-radius);
     transition: background-color .33s;
 }
 
