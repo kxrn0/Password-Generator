@@ -19,7 +19,7 @@ function App() {
   function update(value) {
     const reqChars = requirements.reduce((sets, req) => sets + Number(req.checked), 0);
     
-    if (!value || value < reqChars)
+    if (!reqChars || !value || value < reqChars)
       set_error_state(true);
     else
       set_error_state(false);
