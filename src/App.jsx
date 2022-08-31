@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import zxcvbn from "zxcvbn";
 import Slider from "./components/Slider";
 import create_password from "./password";
 
@@ -11,9 +12,18 @@ function App() {
     { title: "Include Symbols", name: "symbols", checked: false }
   ]);
   const [strength, set_strength] = useState({ label: "medium", name: "medium", index: 3 });
-  const [password, set_password] = useState(create_password(requirements[0].checked, requirements[1].checked, requirements[2].checked, requirements[3].checked, characterLength));
+  const [password, set_password] = useState(() => create_password(requirements[0].checked, requirements[1].checked, requirements[2].checked, requirements[3].checked, characterLength));
+  const [errorState, set_error_state] = useState(false);
+  const [copied, set_copied] = useState(false);
 
   function update(value) {
+    const reqChars = requirements.reduce((sets, req) => sets + Number(req.checked), 0);
+    
+    if (!value || value < reqChars)
+      set_error_state(true);
+    else
+      set_error_state(false);
+
     set_char_length(value);
   }
 
@@ -21,18 +31,31 @@ function App() {
     const index = requirements.findIndex(req => req.name === event.target.value);
     const element = requirements[index];
 
-    set_requirements(prevReqs => prevReqs.slice(0, index).
-      concat({ ...element, checked: !element.checked }).
-      concat(prevReqs.slice(index + 1))
-    );
+    set_requirements(prevReqs => {
+      const reqsult = prevReqs.slice(0, index).concat({ ...element, checked: !element.checked }).concat(prevReqs.slice(index + 1));
+      const reqChars = reqsult.reduce((sets, req) => sets + Number(req.checked), 0);
+
+      if (!reqChars || characterLength < reqChars)
+        set_error_state(true);
+      else
+        set_error_state(false);
+
+      return reqsult;
+
+    });
   }
 
   function generate_password() {
-    const strengthValue = requirements.reduce((sum, req) => sum + Number(req.checked), 0);
+    if (errorState)
+      return;
 
+    let newPassword, strengthValue;
+
+    newPassword = create_password(requirements[0].checked, requirements[1].checked, requirements[2].checked, requirements[3].checked, characterLength);
+    strengthValue = zxcvbn(newPassword).score;
     switch (strengthValue) {
       case 0:
-        set_strength({ label: "", name: "too-weak", index: 0 });
+        set_strength({ label: "too weak!", name: "too-weak", index: 0 });
         break;
       case 1:
         set_strength({ label: "too weak!", name: "too-weak", index: 1 });
@@ -46,8 +69,14 @@ function App() {
       case 4:
         set_strength({ label: "strong", name: "strong", index: 4 });
     }
+    set_password(newPassword);
+  }
 
-    set_password(create_password(requirements[0].checked, requirements[1].checked, requirements[2].checked, requirements[3].checked, characterLength));
+  function copy_to_clipboard() {
+    set_copied(true);
+    navigator.clipboard.writeText(password);
+
+    setTimeout(() => set_copied(false), 1333);
   }
 
   return (
@@ -57,9 +86,12 @@ function App() {
       </header>
       <main className="main-section">
         <div className="password-display">
-          <p className="password">{password}</p>
-          <button className="copy">
-          </button>
+          {!errorState && <p className="password">{password}</p>}
+          {errorState && <p className="password default">P4$5W0rD!</p> }
+          <div className="copy-section">
+            {copied && <p className="copy-text">COPIED</p>}
+            <button className="copy" disabled={errorState} onClick={copy_to_clipboard}></button>
+          </div>
         </div>
         <div className="container">
           <div className="char-length">
@@ -80,16 +112,16 @@ function App() {
           <div className="strength">
             <p className="strength-label">STRENGTH</p>
             <div className="rating">
-              <p className="rating-message">{strength.label}</p>
+              {!errorState && <p className="rating-message">{strength.label}</p>}
               <ul className={`color-rating ${strength.name}`}>
-                <li className={strength.index && strength.index >= 1 ? "active" : "inactive"}></li>
-                <li className={strength.index && strength.index >= 2 ? "active" : "inactive"}></li>
-                <li className={strength.index && strength.index >= 3 ? "active" : "inactive"}></li>
-                <li className={strength.index && strength.index >= 4 ? "active" : "inactive"}></li>
+                <li className={`${strength.index && strength.index >= 1 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
+                <li className={`${strength.index && strength.index >= 2 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
+                <li className={`${strength.index && strength.index >= 3 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
+                <li className={`${strength.index && strength.index >= 4 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
               </ul>
             </div>
           </div>
-          <button className="generate" onClick={generate_password}>
+          <button className={`generate ${errorState ? "not-allowed" : ''}`} onClick={generate_password}>
             <p>GENERATE</p>
             <span className="generate-icon"></span>
           </button>

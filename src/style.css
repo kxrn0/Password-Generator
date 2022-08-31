@@ -52,11 +52,28 @@ body {
     margin-bottom: 24px;
 }
 
+.App .main-section .password-display .copy-section {
+    display: flex;
+    gap: 16px;
+}
+
+.App .main-section .password-display .copy-text {
+    color: var(--neon-green);
+    font-family: jet;
+    font-size: 18px;
+    line-height: 24px;
+}
+
 .App .main-section .password-display .password {
     color: var(--almost-white);
     font-family: jet;
     font-size: 32px;
     line-height: 42px;
+}
+
+.App .main-section .password-display .password.default {
+    opacity: .25;
+    user-select: none;
 }
 
 .App .main-section .password-display .copy {
@@ -70,7 +87,11 @@ body {
     transition: filter .33s, transform .33s;
 }
 
-.App .main-section .password-display .copy:active {
+.App .main-section .password-display .copy:disabled {
+    cursor: not-allowed;
+}
+
+.App .main-section .password-display .copy:active:not(:disabled) {
     transform: scale(.975);
 }
 
@@ -141,8 +162,10 @@ body {
 .App .main-section .strength {
     background: var(--very-dark-gray);
     padding: 20px 32px;
+    height: 72px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 32px;
 }
 
@@ -155,6 +178,7 @@ body {
 
 .App .main-section .strength .rating {
     display: flex;
+    align-items: center;
     gap: 16px;
 }
 
@@ -181,22 +205,22 @@ body {
     height: 28px;
 }
 
-.App .main-section .strength .color-rating.too-weak li.active {
+.App .main-section .strength .color-rating.too-weak li.active:not(.not-allowed) {
     background: var(--too-weak);
     border: none;
 }
 
-.App .main-section .strength .color-rating.weak li.active {
+.App .main-section .strength .color-rating.weak li.active:not(.not-allowed) {
     background: var(--weak);
     border: none;
 }
 
-.App .main-section .strength .color-rating.medium li.active {
+.App .main-section .strength .color-rating.medium li.active:not(.not-allowed) {
     background: var(--medium);
     border: none;
 }
 
-.App .main-section .strength .color-rating.strong li.active {
+.App .main-section .strength .color-rating.strong li.active:not(.not-allowed) {
     background: var(--strong);
     border: none;
 }
@@ -217,6 +241,10 @@ body {
     transition: background-color .33s, color .33s;
 }
 
+.App .main-section .generate.not-allowed {
+    cursor: not-allowed;
+}
+
 .App .main-section .generate .generate-icon {
     background-image: url("./assets/arrow.svg");
     background: cover;
@@ -227,17 +255,126 @@ body {
 }
 
 @media screen and (hover: hover) {
-    .App .main-section .password-display .copy:hover {
+    .App .main-section .password-display .copy:hover:not(:disabled) {
         filter: brightness(200%);
     }
 
-    .App .main-section .generate:hover {
+    .App .main-section .generate:hover:not(.not-allowed) {
         background: transparent;
         color: var(--neon-green);
         border: 2px solid var(--neon-green);
     }
 
-    .App .main-section .generate:hover .generate-icon {
+    .App .main-section .generate:hover:not(.not-allowed) .generate-icon {
+        filter: invert(100%) sepia(24%) saturate(3656%) hue-rotate(52deg) brightness(103%) contrast(112%);
+        transform: translateX(5px);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .App {
+        padding: 20px 0;
+    }
+
+    .App .app-name {
+        font-size: 16px;
+        line-height: 21px;
+        margin-bottom: 16px;
+    }
+    
+    .App .main-section .password-display {
+        padding: 17px 16px;
+        margin-bottom: 16px;
+    }
+
+    .App .main-section .password-display .copy-section {
+        gap: 0;
+        align-items: center;
+    }
+    
+    .App .main-section .password-display .copy-text {
+        font-size: 9px;
+        line-height: 20px;
+        margin: 5px;
+    }
+    
+    .App .main-section .password-display .password {
+        font-size: 24px;
+        line-height: 32px;
+    }
+    
+    .App .main-section .password-display .copy {
+        width: 17.5px;
+        height: 20px;
+    }
+
+    .App .main-section .container {
+        padding: 16px;
+    }
+    
+    .App .main-section .char-length {
+        padding: 5px 0;
+        margin-bottom: 8px;
+    }
+    
+    .App .main-section .char-length .char-label {
+        font-size: 16px;
+        line-height: 21px;
+    }
+    
+    .App .main-section .char-length .char-number {
+        font-size: 24px;
+        line-height: 32px;
+    }
+    
+    .App .main-section .slider {
+        margin: 8px 0 32px 0;
+    }
+    
+    .App .main-section .requirements ul {
+        font-size: 16px;
+        line-height: 21px;
+        gap: 16px;
+    }
+    
+    .App .main-section .requirements ul li {
+        gap: 20px;
+    }
+    
+    .App .main-section .strength {
+        padding: 14px 16px;
+        height: 56px;
+        margin-bottom: 16px;
+    }
+    
+    .App .main-section .strength .strength-label {
+        font-size: 16px;
+        line-height: 21px;
+    }
+    
+    .App .main-section .strength .rating-message {
+        font-size: 18px;
+        line-height: 24px;
+    }
+    
+    .App .main-section .generate {
+        font-size: 16px;
+        line-height: 21px;
+        gap: 16px; 
+        height: 56px;
+    }
+
+    .App .main-section .password-display .copy:active:not(:disabled) {
+        filter: brightness(200%);
+    }
+
+    .App .main-section .generate:active:not(.not-allowed) {
+        background: transparent;
+        color: var(--neon-green);
+        border: 2px solid var(--neon-green);
+    }
+
+    .App .main-section .generate:active:not(.not-allowed) .generate-icon {
         filter: invert(100%) sepia(24%) saturate(3656%) hue-rotate(52deg) brightness(103%) contrast(112%);
         transform: translateX(5px);
     }
