@@ -114,10 +114,10 @@ function App() {
             <div className="rating">
               {!errorState && <p className="rating-message">{strength.label}</p>}
               <ul className={`color-rating ${strength.name}`}>
-                <li className={`${strength.index && strength.index >= 1 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
-                <li className={`${strength.index && strength.index >= 2 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
-                <li className={`${strength.index && strength.index >= 3 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
-                <li className={`${strength.index && strength.index >= 4 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
+                <li className={`${strength.index >= 1 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
+                <li className={`${strength.index >= 2 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
+                <li className={`${strength.index >= 3 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
+                <li className={`${strength.index >= 4 ? "active" : "inactive"} ${errorState ? "not-allowed" : ''}`}></li>
               </ul>
             </div>
           </div>
