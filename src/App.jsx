@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import zxcvbn from "zxcvbn";
 import Slider from "./components/Slider";
 import create_password from "./password";
